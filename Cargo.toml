@@ -1,0 +1,2 @@
+[workspace]
+members = ["core", "fe-lib", "peggy", "server", "victor"]

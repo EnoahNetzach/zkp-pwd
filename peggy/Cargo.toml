@@ -1,0 +1,11 @@
+[package]
+name = "pwd-dl-zkp-peggy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+num-bigint = { version = "0.4", features = ["rand"] }
+num-traits = "0.2"
+pwd-dl-zkp-core = { path = '../core' }
+rand = "0.8"
+

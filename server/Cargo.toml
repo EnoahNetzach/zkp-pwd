@@ -1,0 +1,29 @@
+[package]
+name = "pwd_dl_zkp"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "pwd-dl-zkp"
+path = "src/main.rs"
+
+[dependencies]
+bytes = "1.1"
+env_logger = "0.9"
+futures = "0.3"
+json = "0.12"
+lazy_static = "1.4"
+ntex = { version = "0.5", features = ["tokio"] }
+ntex-cors = { version = "0.2", git = "https://github.com/ntex-rs/ntex-extras" }
+openssl = "0.10"
+pwd-dl-zkp-core = { path = '../core' }
+pwd-dl-zkp-victor = { path = '../victor' }
+rand = "0.8.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sled = "0.34"
+
+[dev-dependencies]
+num-bigint = { version = "0.4", features = ["rand"] }
+num-traits = "0.2"
+pwd-dl-zkp-peggy = { path = '../peggy' }

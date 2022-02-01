@@ -1,0 +1,28 @@
+.App {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.App-header {
+  font-size: calc(10px + 2vmin);
+}
+
+.App-main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  text-wrap: normal;
+}
+
+.App-BigInt {
+  max-width: 300px;
+  overflow-wrap: anywhere;
+}

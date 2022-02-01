@@ -1,0 +1,10 @@
+[package]
+name = "pwd-dl-zkp-victor"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bytes = "1.1"
+openssl = "0.10"
+rand = "0.8.4"
+pwd-dl-zkp-core = { path = "../core" }

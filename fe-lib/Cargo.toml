@@ -1,0 +1,18 @@
+[package]
+name = "pwd_dl_zkp_fe_lib"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "pwd_dl_zkp_fe"
+path = "src/fe-lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+getrandom = { version = "0.2", features = ["js"] }
+num-bigint = { version = "0.4", features = ["rand"] }
+num-traits = "0.2"
+pwd-dl-zkp-core = { path = '../core' }
+pwd-dl-zkp-peggy = { path = '../peggy' }
+rand = "0.8"
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
