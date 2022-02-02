@@ -18,8 +18,8 @@ ntex = { version = "0.5", features = ["tokio"] }
 ntex-cors = { version = "0.2", git = "https://github.com/ntex-rs/ntex-extras" }
 once_cell = "1.9"
 openssl = "0.10"
-pwd-dl-zkp-core = { path = '../core' }
-pwd-dl-zkp-victor = { path = '../victor' }
+pwd-dl-zkp-core = { path = '../lib/core' }
+pwd-dl-zkp-victor = { path = '../lib/victor' }
 rand = "0.8.4"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
@@ -28,4 +28,4 @@ sled = "0.34"
 [dev-dependencies]
 num-bigint = { version = "0.4", features = ["rand"] }
 num-traits = "0.2"
-pwd-dl-zkp-peggy = { path = '../peggy' }
+pwd-dl-zkp-peggy = { path = '../lib/peggy' }

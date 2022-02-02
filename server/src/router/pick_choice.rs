@@ -24,17 +24,15 @@ struct Response {
 }
 
 impl Response {
-    pub fn new() -> Self {
-        let mut rng = thread_rng();
-        let victor = Victor::new();
-        let choice = victor.pick_choice(&mut rng);
-
+    pub fn new(choice: Choice) -> Self {
         Self { choice }
     }
 }
 
 fn do_pick_choice(client_id: &str, c: &str) -> Result<Response, DbTxErr> {
-    let pc = Response::new();
+    let mut rng = thread_rng();
+    let victor = Victor::new();
+    let choice = victor.pick_choice(&mut rng);
 
     let tx_res: TransactionResult<(), DbTxErr> = DB.lock().unwrap().transaction(|tx_db| {
         let mut data: ClientData =
@@ -42,7 +40,7 @@ fn do_pick_choice(client_id: &str, c: &str) -> Result<Response, DbTxErr> {
 
         let mut client_test = ClientTest::default();
         client_test.c = Some(String::from(c));
-        client_test.choice = Some(pc.choice);
+        client_test.choice = Some(choice);
 
         data.tests.push(client_test);
 
@@ -57,7 +55,7 @@ fn do_pick_choice(client_id: &str, c: &str) -> Result<Response, DbTxErr> {
     });
     tx_res.unwrap();
 
-    Ok(pc)
+    Ok(Response::new(choice))
 }
 
 #[web::post("")]

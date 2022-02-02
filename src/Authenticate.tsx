@@ -43,7 +43,7 @@ export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpL
       return choice
     }
 
-    async function calcChoice(choice: string) {
+    async function verify(choice: string) {
       const res = await fetch('http://localhost:8000/verify', {
         cache: 'no-cache',
         body: JSON.stringify({ res: zkpLib.calc_choice(choice, x, r, p) }),
@@ -61,14 +61,19 @@ export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpL
       setNOfTries(nOfTries + 1)
       setNOfInvalids(valid ? nOfInvalid : nOfInvalid + 1)
 
-      return !cont
+      return cont
     }
 
-    async function authenticated(shoudContinue: boolean) {
-      if (!shoudContinue) {
-        return
-      }
+    async function verifyLoop(): Promise<void> {
+      const choice = await pickChoice()
+      const shouldContinue = await verify(choice)
 
+      if (shouldContinue) {
+        return verifyLoop()
+      }
+    }
+
+    async function authenticated() {
       const res = await fetch('http://localhost:8000/authenticated', {
         cache: 'no-cache',
         headers: {
@@ -78,11 +83,12 @@ export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpL
         signal,
       })
 
-      setAuthenticated(await res.json())
+      const { auth } = await res.json()
+
+      setAuthenticated(auth)
     }
 
-    pickChoice()
-      .then(calcChoice)
+    verifyLoop()
       .then(authenticated)
       .catch((err) => {
         console.error(err)

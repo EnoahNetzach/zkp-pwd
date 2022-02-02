@@ -1,2 +1,2 @@
 [workspace]
-members = ["core", "fe-lib", "peggy", "server", "victor"]
+members = ["lib/core", "lib/frontend", "lib/peggy", "server", "lib/victor"]

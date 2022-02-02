@@ -18,15 +18,12 @@ struct Response {
 }
 
 impl Response {
-    pub fn new(client_id: &str) -> Result<Self, ErrorStack> {
-        let victor = Victor::new();
-        let (p, g) = victor.handshake()?;
-
-        Ok(Self {
+    pub fn new(client_id: &str, p: &str, g: &str) -> Self {
+        Self {
             client_id: client_id.to_string(),
-            p: p.to_hex_str().unwrap().to_string(),
-            g: g.to_hex_str().unwrap().to_string(),
-        })
+            p: p.to_string(),
+            g: g.to_string(),
+        }
     }
 }
 
@@ -35,11 +32,14 @@ fn do_handshake() -> Result<Response, ErrorStack> {
     client_id.rand(128, MsbOption::MAYBE_ZERO, false)?;
     let client_id = client_id.to_hex_str()?.to_string().to_lowercase();
 
-    let hs = Response::new(client_id.as_str())?;
+    let victor = Victor::new();
+    let (p, g) = victor.handshake()?;
+    let p = p.to_hex_str()?.to_string();
+    let g = g.to_hex_str()?.to_string();
 
     let mut data = ClientData::new();
-    data.p = Some(hs.p.clone());
-    data.g = Some(hs.g.clone());
+    data.p = Some(p.clone());
+    data.g = Some(g.clone());
 
     DB.lock()
         .unwrap()
@@ -49,7 +49,7 @@ fn do_handshake() -> Result<Response, ErrorStack> {
         )
         .unwrap();
 
-    Ok(hs)
+    Ok(Response::new(client_id.as_str(), p.as_str(), g.as_str()))
 }
 
 #[web::get("")]

@@ -25,4 +25,12 @@ impl ClientData {
             ..Default::default()
         }
     }
+
+    pub fn should_continue(&self) -> bool {
+        self.tests
+            .iter()
+            .filter(|t| t.valid.unwrap_or(false))
+            .count()
+            < 10
+    }
 }

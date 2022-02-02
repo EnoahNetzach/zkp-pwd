@@ -20,6 +20,7 @@ async fn main() -> std::io::Result<()> {
                 Cors::new()
                     .allowed_origin("http://localhost:3080")
                     .allowed_methods(vec!["GET", "POST", "OPTIONS"])
+                    .allowed_headers(vec!["content-type", "x-client-id"])
                     .max_age(3600)
                     .finish(),
             )

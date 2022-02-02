@@ -35,7 +35,14 @@ export default function App() {
                 <Password setClientId={setClientId} setG={setG} setP={setP} setX={setX} x={x} zkpLib={zkpLib} />
 
                 {clientId && g && p && x ? (
-                  <Authenticate clientId={clientId} g={g} p={p} setAuthenticated={setAuthenticated} x={x} zkpLib={zkpLib} />
+                  <Authenticate
+                    clientId={clientId}
+                    g={g}
+                    p={p}
+                    setAuthenticated={setAuthenticated}
+                    x={x}
+                    zkpLib={zkpLib}
+                  />
                 ) : null}
               </>
             ) : null}

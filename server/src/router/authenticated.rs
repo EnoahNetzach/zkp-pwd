@@ -14,12 +14,18 @@ struct Response {
     auth: bool,
 }
 
+impl Response {
+    pub fn new(auth: bool) -> Self {
+        Self { auth }
+    }
+}
+
 fn do_authenticated(client_id: &str) -> Result<Response, DbTxErr> {
-    let tx_res: TransactionResult<Response, DbTxErr> = DB.lock().unwrap().transaction(|tx_db| {
+    let tx_res: TransactionResult<bool, DbTxErr> = DB.lock().unwrap().transaction(|tx_db| {
         let mut data: ClientData =
             from_slice(tx_db.get(client_id).unwrap().unwrap().borrow()).unwrap();
 
-        let auth = data.tests.iter().all(|test| test.valid.unwrap_or(false));
+        let auth = !data.should_continue();
 
         data.auth = Some(auth);
         data.tests = vec![];
@@ -31,10 +37,10 @@ fn do_authenticated(client_id: &str) -> Result<Response, DbTxErr> {
             )
             .unwrap();
 
-        Ok(Response { auth })
+        Ok(auth)
     });
 
-    Ok(tx_res.unwrap())
+    Ok(Response::new(tx_res.unwrap()))
 }
 
 #[web::get("")]
