@@ -11,10 +11,13 @@ interface Props {
 }
 
 export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpLib }: Props) {
+  const [btnEnabled, setBtnEnabled] = useState(true)
   const [nOfTries, setNOfTries] = useState(0)
   const [nOfInvalid, setNOfInvalids] = useState(0)
 
   const authenticate = useCallback(() => {
+    setBtnEnabled(false)
+
     const r = zkpLib.gen_r(p)
 
     const c = zkpLib.calc_c(r, g, p)
@@ -85,6 +88,8 @@ export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpL
         console.error(err)
         controller.abort()
       })
+
+    setBtnEnabled(true)
   }, [zkpLib, x, g, p, nOfTries, nOfInvalid])
 
   return (
@@ -94,10 +99,14 @@ export default function Authenticate({ clientId, g, p, setAuthenticated, x, zkpL
       <p className="App-BigInt">g: {g?.toString() ?? ''}</p>
 
       <div>
-        <button onClick={() => authenticate()}>Authenticate</button>
+        <button disabled={!btnEnabled} onClick={() => authenticate()}>
+          Authenticate
+        </button>
       </div>
 
-      <p>Invalid attempts: {nOfInvalid} / {nOfTries}</p>
+      <p>
+        Invalid attempts: {nOfInvalid} / {nOfTries}
+      </p>
     </div>
   )
 }

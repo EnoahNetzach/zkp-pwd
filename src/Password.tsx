@@ -17,6 +17,7 @@ interface Props {
 }
 
 export default function Password({ setClientId, setG, setP, setX, x, zkpLib }: Props) {
+  const [btnEnabled, setBtnEnabled] = useState(true)
   const [tempX, setTempX] = useState<string>('')
 
   const setPassword = useCallback(
@@ -24,6 +25,8 @@ export default function Password({ setClientId, setG, setP, setX, x, zkpLib }: P
       if (!pwd || pwd === '') {
         return
       }
+
+      setBtnEnabled(false)
 
       const x = encodeStringToBigInt(pwd)
       setX(x)
@@ -73,6 +76,8 @@ export default function Password({ setClientId, setG, setP, setX, x, zkpLib }: P
           console.error(err)
           controller.abort()
         })
+
+      setBtnEnabled(true)
     },
     [zkpLib],
   )
@@ -83,7 +88,9 @@ export default function Password({ setClientId, setG, setP, setX, x, zkpLib }: P
         Password: <input onChange={(e) => setTempX(e.target.value)} value={tempX} />
       </label>
 
-      <button onClick={() => setPassword(tempX)}>Set</button>
+      <button disabled={!btnEnabled} onClick={() => setPassword(tempX)}>
+        Set
+      </button>
 
       <p>HEX: {x?.toString() ?? ''}</p>
     </div>
